@@ -14,8 +14,7 @@
 //==============================================================================
 /**
 */
-class FaderVSTAudioProcessorEditor  : public juce::AudioProcessorEditor
-{
+class FaderVSTAudioProcessorEditor  : public juce::AudioProcessorEditor {
 public:
     FaderVSTAudioProcessorEditor (FaderVSTAudioProcessor&);
     ~FaderVSTAudioProcessorEditor() override;

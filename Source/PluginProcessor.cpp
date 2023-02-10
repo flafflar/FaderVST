@@ -24,8 +24,7 @@ FaderVSTAudioProcessor::FaderVSTAudioProcessor()
 {
 }
 
-FaderVSTAudioProcessor::~FaderVSTAudioProcessor()
-{
+FaderVSTAudioProcessor::~FaderVSTAudioProcessor(){
 }
 
 //==============================================================================
