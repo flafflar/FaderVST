@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="dN0tne" name="FaderVST" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginFormats="buildStandalone,buildVST,buildVST3">
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginFormats="buildStandalone,buildVST3">
   <MAINGROUP id="KhkqaH" name="FaderVST">
     <GROUP id="{C840A5DE-C8E3-D0CB-8B19-5073A5CD4352}" name="Source">
       <FILE id="mDTWHa" name="PluginProcessor.cpp" compile="1" resource="0"
