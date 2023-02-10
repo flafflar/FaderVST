@@ -28,5 +28,8 @@ private:
     // access the processor object that created it.
     FaderVSTAudioProcessor& audioProcessor;
 
+    juce::Slider volumeRange;
+    juce::Slider currentVolume;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FaderVSTAudioProcessorEditor)
 };
