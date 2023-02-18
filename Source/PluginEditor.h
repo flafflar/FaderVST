@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include <array>
 
 //==============================================================================
 /**
@@ -30,6 +31,7 @@ private:
 
     juce::Slider volumeRange;
     juce::Slider currentVolume;
+    juce::TextButton fadeButton;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FaderVSTAudioProcessorEditor)
 };

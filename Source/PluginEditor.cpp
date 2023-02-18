@@ -28,9 +28,18 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
     currentVolume.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     currentVolume.setValue(1.0);
 
+    // Configure the fade button
+    fadeButton.setButtonText("Fade");
+    fadeButton.onClick = [this](){
+      this->audioProcessor.fade(1.0);
+    };
+
     // Add the sliders to the window
     addAndMakeVisible(volumeRange);
     addAndMakeVisible(currentVolume);
+
+    // Add the button to the window
+    addAndMakeVisible(fadeButton);
 }
 
 FaderVSTAudioProcessorEditor::~FaderVSTAudioProcessorEditor(){
@@ -48,4 +57,7 @@ void FaderVSTAudioProcessorEditor::resized(){
 
     // Set the position of the current volume slider
     currentVolume.setBounds(40, 60, getWidth() - 80, 90);
+
+    // Set the position of the fade button
+    fadeButton.setBounds(40, 160, getWidth() - 80, 40);
 }
