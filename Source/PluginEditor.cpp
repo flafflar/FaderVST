@@ -12,6 +12,11 @@
 //==============================================================================
 FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p) {
+    
+    faded = false;
+    fadeDownTime = 1.0;
+    fadeUpTime = 1.0;
+
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (400, 300);
@@ -34,8 +39,25 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
     // Configure the fade button
     fadeButton.setButtonText("Fade");
     fadeButton.onClick = [this](){
-      this->audioProcessor.fade(1.0);
+      if (this->faded){
+        faded = false;
+        this->audioProcessor.fadeUp(this->fadeUpTime);
+      } else {
+        faded = true;
+        this->audioProcessor.fadeDown(this->fadeDownTime);
+      }
     };
+
+    // Configure the fade times textboxes
+    fadeDownTimeLabel.setEditable(true);
+    fadeDownTimeLabel.setJustificationType(juce::Justification::centred);
+    fadeDownTimeLabel.setText("1.0", juce::dontSendNotification);
+    fadeDownTimeLabel.addListener(this);
+
+    fadeUpTimeLabel.setEditable(true);
+    fadeUpTimeLabel.setJustificationType(juce::Justification::centred);
+    fadeUpTimeLabel.setText("1.0", juce::dontSendNotification);
+    fadeUpTimeLabel.addListener(this);
 
     // Add the sliders to the window
     addAndMakeVisible(volumeRange);
@@ -43,6 +65,10 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
 
     // Add the button to the window
     addAndMakeVisible(fadeButton);
+
+    // Add the fade time textboxes to the window
+    addAndMakeVisible(fadeDownTimeLabel);
+    addAndMakeVisible(fadeUpTimeLabel);
 }
 
 FaderVSTAudioProcessorEditor::~FaderVSTAudioProcessorEditor(){
@@ -61,6 +87,20 @@ void FaderVSTAudioProcessorEditor::resized(){
     // Set the position of the current volume slider
     currentVolume.setBounds(40, 60, getWidth() - 80, 90);
 
+    // Set the positions of the fade time textboxes
+    fadeDownTimeLabel.setBounds(40, 120, (getWidth() - 80) / 2, 20);
+    fadeUpTimeLabel.setBounds(fadeDownTimeLabel.getX() + fadeDownTimeLabel.getWidth(), 120, fadeDownTimeLabel.getWidth(), 20);
+
     // Set the position of the fade button
     fadeButton.setBounds(40, 160, getWidth() - 80, 40);
+}
+
+void FaderVSTAudioProcessorEditor::labelTextChanged(juce::Label *label){
+    juce::String text = label->getText();
+    double value = text.getDoubleValue();
+    if (label == &fadeDownTimeLabel){
+      fadeDownTime = value;
+    } else if (label == &fadeUpTimeLabel) {
+      fadeUpTime = value;
+    }
 }
