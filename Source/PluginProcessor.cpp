@@ -147,7 +147,11 @@ void FaderVSTAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    if (fadeDuration == 0) return;
+    if (fadeDuration == 0){
+        // Just apply constant gain and end the processing
+        buffer.applyGain(gain);
+        return;
+    };
     
     /** How many samples remain until the fading ends */
     int remaining;
@@ -177,9 +181,10 @@ void FaderVSTAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
     buffer.applyGainRamp(0, buffer.getNumSamples(), gain, finalGain);
 
     // If any samples remain after the ramp, apply a constant gain
-    if (samplesToProcess < buffer.getNumSamples()){
+    // TODO: Make this work properly
+    /*if (samplesToProcess < buffer.getNumSamples()){
         buffer.applyGain(samplesToProcess, buffer.getNumSamples(), finalGain);
-    }
+    }*/
 
     gain = finalGain;
 }
