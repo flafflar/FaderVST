@@ -61,6 +61,11 @@ public:
       fadeDuration = seconds * sampleRate;
     }
 
+    void setGainRange(float low, float high){
+      *gainLow = low;
+      *gainHigh = high;
+    }
+
 private:
     /** The current sample rate, needed to calculate some durations in samples. */
     double sampleRate;

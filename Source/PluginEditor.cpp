@@ -21,6 +21,9 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
     volumeRange.setRange(0.0, 1.0, 0.01);
     volumeRange.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     volumeRange.setMinAndMaxValues(0.0, 1.0);
+    volumeRange.onValueChange = [this](){
+      this->audioProcessor.setGainRange(this->volumeRange.getMinValue(), this->volumeRange.getMaxValue());
+    };
 
     // Configure the current volume slider
     currentVolume.setSliderStyle(juce::Slider::LinearHorizontal);
