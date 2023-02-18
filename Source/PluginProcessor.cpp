@@ -22,6 +22,11 @@ FaderVSTAudioProcessor::FaderVSTAudioProcessor()
                        )
 #endif
 {
+    addParameter(gainLow = new juce::AudioParameterFloat("gainLow", "Low Gain", 0.0, 1.0, 0.0));
+    addParameter(gainHigh = new juce::AudioParameterFloat("gainHigh", "High Gain", 0.0, 1.0, 1.0));
+    addParameter(faded = new juce::AudioParameterBool("faded", "Is Fading", false));
+    gain = 1.0;
+    fadeDuration = 0;
 }
 
 FaderVSTAudioProcessor::~FaderVSTAudioProcessor(){
@@ -92,8 +97,7 @@ void FaderVSTAudioProcessor::changeProgramName (int index, const juce::String& n
 //==============================================================================
 void FaderVSTAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    this->sampleRate = sampleRate;
 }
 
 void FaderVSTAudioProcessor::releaseResources()
@@ -143,18 +147,41 @@ void FaderVSTAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer (channel);
-
-        // ..do something to the data...
+    if (fadeDuration == 0) return;
+    
+    /** How many samples remain until the fading ends */
+    int remaining;
+    if (faded->get()){
+        // Going down
+        remaining = (gain - gainLow->get()) / (gainHigh->get() - gainLow->get()) * fadeDuration;
+    } else {
+        // Going up
+        remaining = (gainHigh->get() - gain) / (gainHigh->get() - gainLow->get()) * fadeDuration;
     }
+
+    /** How many samples to process in the current block */
+    int samplesToProcess = juce::jmin(remaining, buffer.getNumSamples());
+    /** The gain at the end of the block */
+    float finalGain;
+
+    float gainStep = (gainHigh->get() - gainLow->get()) / fadeDuration * samplesToProcess;
+    if (faded->get()){
+        // Going down
+        finalGain = gain - gainStep;
+    } else {
+        // Going up
+        finalGain = gain + gainStep;
+    }
+
+    // Apply the gain ramp
+    buffer.applyGainRamp(0, buffer.getNumSamples(), gain, finalGain);
+
+    // If any samples remain after the ramp, apply a constant gain
+    if (samplesToProcess < buffer.getNumSamples()){
+        buffer.applyGain(samplesToProcess, buffer.getNumSamples(), finalGain);
+    }
+
+    gain = finalGain;
 }
 
 //==============================================================================
