@@ -60,6 +60,16 @@ public:
       *faded = !*faded;
       fadeDuration = seconds * sampleRate;
     }
+    
+    void fadeDown(double seconds){
+      *faded = true;
+      fadeDuration = seconds * sampleRate;
+    }
+
+    void fadeUp(double seconds){
+      *faded = false;
+      fadeDuration = seconds * sampleRate;
+    }
 
     void setGainRange(float low, float high){
       *gainLow = low;
