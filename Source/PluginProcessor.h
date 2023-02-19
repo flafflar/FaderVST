@@ -78,18 +78,23 @@ public:
     }
 
 private:
+    /**
+     * The parameter tree of the plugin.
+     */
+    juce::AudioProcessorValueTreeState parameters;
+
     /** The current sample rate, needed to calculate some durations in samples. */
     double sampleRate;
 
     /** The value of the gain when faded. */
-    juce::AudioParameterFloat *gainLow;
+    std::atomic<float> *gainLow;
     /** The value of the gain when normal. */
-    juce::AudioParameterFloat *gainHigh;
+    std::atomic<float> *gainHigh;
 
     /** 
      * The current value of the gain. 
      */
-    juce::AudioParameterFloat *gain;
+    std::atomic<float> *gain;
 
     /** 
      * Indicates the current state of the fading.
@@ -99,7 +104,7 @@ private:
      * After the fading has ended, the value stays the same, so 0.0 means faded to 
      * the low gain and 1.0 faded to the high gain.
      */
-    juce::AudioParameterFloat *fading;
+    std::atomic<float> *fading;
 
     /** The total duration of the current fade (in samples). */
     int fadeDuration;

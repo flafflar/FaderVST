@@ -16,12 +16,20 @@ FaderVSTAudioProcessor::FaderVSTAudioProcessor()
                        .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                        )
+#else
+    : AudioProcessor()
 #endif
+, parameters(*this, nullptr, "FaderVST", {
+    std::make_unique<juce::AudioParameterFloat>("gainLow", "Low Gain", 0.0, 1.0, 0.0),
+    std::make_unique<juce::AudioParameterFloat>("gainHigh", "High Gain", 0.0, 1.0, 1.0),
+    std::make_unique<juce::AudioParameterFloat>("gain", "Gain", 0.0, 1.0, 1.0),
+    std::make_unique<juce::AudioParameterBool>("fading", "Is Fading", false),
+})
 {
-    addParameter(gainLow = new juce::AudioParameterFloat("gainLow", "Low Gain", 0.0, 1.0, 0.0));
-    addParameter(gainHigh = new juce::AudioParameterFloat("gainHigh", "High Gain", 0.0, 1.0, 1.0));
-    addParameter(gain = new juce::AudioParameterFloat("gain", "Gain", 0.0, 1.0, 1.0));
-    addParameter(fading = new juce::AudioParameterFloat("faded", "Is Fading", 0.0, 1.0, 0.0));
+    gainLow = parameters.getRawParameterValue("gainLow");
+    gainHigh = parameters.getRawParameterValue("gainHigh");
+    gain = parameters.getRawParameterValue("gain");
+    fading = parameters.getRawParameterValue("fading");
     fadeDuration = 0;
 }
 
