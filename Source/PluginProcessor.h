@@ -87,11 +87,8 @@ private:
 
     /** 
      * The current value of the gain. 
-     * 
-     * This should have been an AudioParameterFloat, but for some reason it could not 
-     * be modified inside the processBlock method.
      */
-    float gain;
+    juce::AudioParameterFloat *gain;
 
     /** 
      * Whether the audio is faded (or in the process of fading). 
