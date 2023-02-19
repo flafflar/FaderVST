@@ -145,7 +145,7 @@ void FaderVSTAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
 
     if (fadeDuration == 0){
         // Just apply constant gain and end the processing
-        buffer.applyGain(gain->get());
+        buffer.applyGain(*gain);
         return;
     };
     
@@ -153,10 +153,10 @@ void FaderVSTAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
     int remaining;
     if (faded->get()){
         // Going down
-        remaining = (gain->get() - gainLow->get()) / (gainHigh->get() - gainLow->get()) * fadeDuration;
+        remaining = (*gain - *gainLow) / (*gainHigh - *gainLow) * fadeDuration;
     } else {
         // Going up
-        remaining = (gainHigh->get() - gain->get()) / (gainHigh->get() - gainLow->get()) * fadeDuration;
+        remaining = (*gainHigh - *gain) / (*gainHigh - *gainLow) * fadeDuration;
     }
 
     /** How many samples to process in the current block */
@@ -164,17 +164,17 @@ void FaderVSTAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
     /** The gain at the end of the block */
     float finalGain;
 
-    float gainStep = (gainHigh->get() - gainLow->get()) / fadeDuration * samplesToProcess;
+    float gainStep = (*gainHigh - *gainLow) / fadeDuration * samplesToProcess;
     if (faded->get()){
         // Going down
-        finalGain = gain->get() - gainStep;
+        finalGain = *gain - gainStep;
     } else {
         // Going up
-        finalGain = gain->get() + gainStep;
+        finalGain = *gain + gainStep;
     }
 
     // Apply the gain ramp
-    buffer.applyGainRamp(0, buffer.getNumSamples(), gain->get(), finalGain);
+    buffer.applyGainRamp(0, buffer.getNumSamples(), *gain, finalGain);
 
     // If any samples remain after the ramp, apply a constant gain
     // TODO: Make this work properly
