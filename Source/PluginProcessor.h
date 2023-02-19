@@ -57,17 +57,18 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     void fade(double seconds){
-      *faded = !*faded;
+      // Invert the fading direction
+      *fading = 1.0 - *fading;
       fadeDuration = seconds * sampleRate;
     }
     
     void fadeDown(double seconds){
-      *faded = true;
+      *fading = 0.0;
       fadeDuration = seconds * sampleRate;
     }
 
     void fadeUp(double seconds){
-      *faded = false;
+      *fading = 1.0;
       fadeDuration = seconds * sampleRate;
     }
 
@@ -91,11 +92,14 @@ private:
     juce::AudioParameterFloat *gain;
 
     /** 
-     * Whether the audio is faded (or in the process of fading). 
+     * Indicates the current state of the fading.
      * 
-     * True when the audio is fading downwards, false when it is fading upwards.
+     * A value of 0.0 means the audio should be fading downwards, and a value of 1.0 
+     * means it should be fading upwards.
+     * After the fading has ended, the value stays the same, so 0.0 means faded to 
+     * the low gain and 1.0 faded to the high gain.
      */
-    juce::AudioParameterBool *faded;
+    juce::AudioParameterFloat *fading;
 
     /** The total duration of the current fade (in samples). */
     int fadeDuration;

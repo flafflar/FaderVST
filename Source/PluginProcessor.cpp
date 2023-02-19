@@ -21,7 +21,7 @@ FaderVSTAudioProcessor::FaderVSTAudioProcessor()
     addParameter(gainLow = new juce::AudioParameterFloat("gainLow", "Low Gain", 0.0, 1.0, 0.0));
     addParameter(gainHigh = new juce::AudioParameterFloat("gainHigh", "High Gain", 0.0, 1.0, 1.0));
     addParameter(gain = new juce::AudioParameterFloat("gain", "Gain", 0.0, 1.0, 1.0));
-    addParameter(faded = new juce::AudioParameterBool("faded", "Is Fading", false));
+    addParameter(fading = new juce::AudioParameterFloat("faded", "Is Fading", 0.0, 1.0, 0.0));
     fadeDuration = 0;
 }
 
@@ -151,7 +151,7 @@ void FaderVSTAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
     
     /** How many samples remain until the fading ends */
     int remaining;
-    if (faded->get()){
+    if (*fading < 0.5){
         // Going down
         remaining = (*gain - *gainLow) / (*gainHigh - *gainLow) * fadeDuration;
     } else {
@@ -165,7 +165,7 @@ void FaderVSTAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
     float finalGain;
 
     float gainStep = (*gainHigh - *gainLow) / fadeDuration * samplesToProcess;
-    if (faded->get()){
+    if (*fading < 0.5){
         // Going down
         finalGain = *gain - gainStep;
     } else {
