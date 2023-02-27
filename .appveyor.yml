@@ -10,6 +10,16 @@ clone_depth: 1
 cache:
     - build
 
+for:
+-
+    matrix:
+        only:
+            - image: Ubuntu
+
+    install:
+    - sh: |
+        sudo apt -q -y install libasound2-dev
+
 build_script:
 - ps: |
     cmake -B build -DCMAKE_BUILD_TYPE=$env:BUILD_TYPE
