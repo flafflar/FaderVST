@@ -190,7 +190,8 @@ void FaderVSTAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
         buffer.applyGain(samplesToProcess, buffer.getNumSamples(), finalGain);
     }*/
 
-    *gain = finalGain;
+    // Notify the editor that the parameter has changed so it can update the GUI
+    parameters.getParameter("gain")->setValueNotifyingHost(finalGain);
 }
 
 //==============================================================================
@@ -201,7 +202,7 @@ bool FaderVSTAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* FaderVSTAudioProcessor::createEditor()
 {
-    return new FaderVSTAudioProcessorEditor (*this);
+    return new FaderVSTAudioProcessorEditor (*this, parameters);
 }
 
 //==============================================================================

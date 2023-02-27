@@ -10,8 +10,8 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p) {
+FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcessor& p, juce::AudioProcessorValueTreeState &tree)
+    : AudioProcessorEditor (&p), audioProcessor (p), tree(tree) {
     
     faded = false;
     fadeDownTime = 1.0;
@@ -35,6 +35,11 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
     currentVolume.setRange(0.0, 1.0, 0.01);
     currentVolume.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     currentVolume.setValue(1.0);
+
+    // Create the attachment to the gain parameter
+    currentVolumeAttachment.reset(new juce::ParameterAttachment(*tree.getParameter("gain"), [this](float value){
+      currentVolume.setValue(value, juce::sendNotificationSync);
+    }));
 
     // Configure the fade button
     fadeButton.setButtonText("Fade");
