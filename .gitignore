@@ -1,2 +1,2 @@
 # Ignore build artifacts
-Builds/LinuxMakefile/build
+build/
