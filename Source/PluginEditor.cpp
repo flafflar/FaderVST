@@ -43,15 +43,7 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
 
     // Configure the fade button
     fadeButton.setButtonText("Fade");
-    fadeButton.onClick = [this](){
-      if (this->faded){
-        faded = false;
-        this->audioProcessor.fadeUp(this->fadeUpTime);
-      } else {
-        faded = true;
-        this->audioProcessor.fadeDown(this->fadeDownTime);
-      }
-    };
+    fadeButton.onClick = std::bind(&FaderVSTAudioProcessorEditor::fade, this);
 
     // Configure the fade times textboxes
     fadeDownTimeLabel.setEditable(true);
@@ -100,6 +92,16 @@ void FaderVSTAudioProcessorEditor::resized(){
     fadeButton.setBounds(40, 160, getWidth() - 80, 40);
 }
 
+void FaderVSTAudioProcessorEditor::fade(){
+    if (this->faded){
+        faded = false;
+        this->audioProcessor.fadeUp(this->fadeUpTime);
+    } else {
+        faded = true;
+        this->audioProcessor.fadeDown(this->fadeDownTime);
+    }
+}
+
 void FaderVSTAudioProcessorEditor::labelTextChanged(juce::Label *label){
     juce::String text = label->getText();
     double value = text.getDoubleValue();
@@ -108,4 +110,11 @@ void FaderVSTAudioProcessorEditor::labelTextChanged(juce::Label *label){
     } else if (label == &fadeUpTimeLabel) {
       fadeUpTime = value;
     }
+}
+
+bool FaderVSTAudioProcessorEditor::keyPressed(const juce::KeyPress &key){
+    if (key.getTextCharacter() == ' '){
+        fade();
+    }
+    return false;
 }

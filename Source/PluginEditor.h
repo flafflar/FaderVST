@@ -27,6 +27,8 @@ public:
 protected:
     void labelTextChanged(juce::Label*) override;
 
+    bool keyPressed(const juce::KeyPress&) override;
+
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
@@ -50,6 +52,8 @@ private:
      * True when the audio is fading downwards, false when it is fading upwards.
      */
     bool faded;
+
+    void fade();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FaderVSTAudioProcessorEditor)
 };
