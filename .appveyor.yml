@@ -22,7 +22,9 @@ for:
 
 before_build:
 - ps: |
-    tar -x -f build.tar
+    if (Test-Path build.tar -PathType Leaf){
+        tar -x -f build.tar
+    }
 
 build_script:
 - ps: |
