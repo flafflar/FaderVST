@@ -8,7 +8,7 @@ environment:
 clone_depth: 1
 
 cache:
-    - build
+    - build.tar -> CMakeLists.txt
 
 for:
 -
@@ -20,11 +20,21 @@ for:
     - sh: |
         sudo apt -q -y install libasound2-dev
 
+before_build:
+- ps: |
+    tar -x -f build.tar
+
 build_script:
 - ps: |
-    cmake -B build -DCMAKE_BUILD_TYPE="$env:BUILD_TYPE"
+    if (Test-Path build -PathType Container){
+        cmake -B build -DCMAKE_BUILD_TYPE="$env:BUILD_TYPE"
+    }
     cmake --build build --config $env:BUILD_TYPE
     
+on_finish:
+    - ps: |
+        tar -c -f build.tar build
+
 artifacts:
     - path: build/FaderVST_artefacts/$(BUILD_TYPE)/VST3/FaderVST.vst3/Contents/x86_64-win/FaderVST.vst3
       name: FaderVST-win.vst3
