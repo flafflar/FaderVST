@@ -40,5 +40,5 @@ on_finish:
 artifacts:
     - path: build/FaderVST_artefacts/$(BUILD_TYPE)/VST3/FaderVST.vst3/Contents/x86_64-win/FaderVST.vst3
       name: FaderVST-win.vst3
-    - path: build/FaderVST_artefacts/$(BUILD_TYPE)/VST3/FaderVST.vst3/Contents/x86_64-linux/FaderVST.vst3
+    - path: build/FaderVST_artefacts/$(BUILD_TYPE)/VST3/FaderVST.vst3/Contents/x86_64-linux/FaderVST.so
       name: FaderVST-linux.vst3
