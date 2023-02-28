@@ -55,10 +55,52 @@ private:
     FaderVSTAudioProcessor& audioProcessor;
     juce::AudioProcessorValueTreeState &tree;
 
+    /**
+     * A double slider that sets the range of the gain.
+     */
     juce::Slider volumeRange;
+    
+    /**
+     * The text input for the low point of the gain range.
+     */
+    juce::Label volumeRangeLowInput;
+
+    /**
+     * The label for the volumeRangeLowInput.
+     */
+    juce::Label volumeRangeLowLabel;
+
+    /**
+     * The text input for the high point of the gain range.
+     */
+    juce::Label volumeRangeHighInput;
+
+    /**
+     * The label for the volumeRangeHighInput.
+     */
+    juce::Label volumeRangeHighLabel;
+
     juce::Slider currentVolume;
     juce::TextButton fadeButton;
+
+    /**
+     * The input for the fade down time duration.
+     */
+    juce::Label fadeDownTimeInput;
+
+    /**
+     * The label for the fadeDownTimeInput.
+     */
     juce::Label fadeDownTimeLabel;
+
+    /**
+     * The input for the fade down time duration.
+     */
+    juce::Label fadeUpTimeInput;
+
+    /**
+     * The label for the fadeUpTimeInput.
+     */
     juce::Label fadeUpTimeLabel;
 
     std::unique_ptr<juce::ParameterAttachment> currentVolumeAttachment;

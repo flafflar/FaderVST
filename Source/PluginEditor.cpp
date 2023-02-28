@@ -50,6 +50,31 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
       this->audioProcessor.setGainRange(this->volumeRange.getMinValue(), this->volumeRange.getMaxValue());
     };
 
+
+    // Configure the volume range low point input and its label
+    volumeRangeLowInput.setText("0.0", juce::dontSendNotification);
+    volumeRangeLowInput.setFont(juce::Font(16, juce::Font::bold));
+    volumeRangeLowInput.setEditable(true);
+    addAndMakeVisible(volumeRangeLowInput);
+
+    volumeRangeLowLabel.setText("Low gain", juce::dontSendNotification);
+    volumeRangeLowLabel.setFont(juce::Font(13, juce::Font::plain));
+    volumeRangeLowLabel.setJustificationType(juce::Justification::centredLeft);
+    addAndMakeVisible(volumeRangeLowLabel);
+
+
+    // Configure the volume range high point input and its label
+    volumeRangeHighInput.setText("0.0", juce::dontSendNotification);
+    volumeRangeHighInput.setFont(juce::Font(16, juce::Font::bold));
+    volumeRangeHighInput.setEditable(true);
+    addAndMakeVisible(volumeRangeHighInput);
+
+    volumeRangeHighLabel.setText("High gain", juce::dontSendNotification);
+    volumeRangeHighLabel.setFont(juce::Font(13, juce::Font::plain));
+    volumeRangeHighLabel.setJustificationType(juce::Justification::centredLeft);
+    addAndMakeVisible(volumeRangeHighLabel);
+
+
     // Configure the current volume slider
     currentVolume.setSliderStyle(juce::Slider::LinearHorizontal);
     currentVolume.setRange(0.0, 1.0, 0.01);
@@ -66,15 +91,28 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
     fadeButton.onClick = std::bind(&FaderVSTAudioProcessorEditor::fade, this);
 
     // Configure the fade times textboxes
-    fadeDownTimeLabel.setEditable(true);
-    fadeDownTimeLabel.setJustificationType(juce::Justification::centred);
-    fadeDownTimeLabel.setText("1.0", juce::dontSendNotification);
-    fadeDownTimeLabel.addListener(this);
+    fadeDownTimeInput.setEditable(true);
+    fadeDownTimeInput.setJustificationType(juce::Justification::centred);
+    fadeDownTimeInput.setText("1.0", juce::dontSendNotification);
+    fadeDownTimeInput.setFont(juce::Font(16, juce::Font::bold));
+    fadeDownTimeInput.addListener(this);
 
-    fadeUpTimeLabel.setEditable(true);
-    fadeUpTimeLabel.setJustificationType(juce::Justification::centred);
-    fadeUpTimeLabel.setText("1.0", juce::dontSendNotification);
-    fadeUpTimeLabel.addListener(this);
+    fadeDownTimeLabel.setText("Fade down time", juce::dontSendNotification);
+    fadeDownTimeLabel.setFont(juce::Font(13, juce::Font::plain));
+    fadeDownTimeLabel.setJustificationType(juce::Justification::centredLeft);
+    addAndMakeVisible(fadeDownTimeLabel);
+
+    fadeUpTimeInput.setEditable(true);
+    fadeUpTimeInput.setJustificationType(juce::Justification::centred);
+    fadeUpTimeInput.setText("1.0", juce::dontSendNotification);
+    fadeUpTimeInput.setFont(juce::Font(16, juce::Font::bold));
+    fadeUpTimeInput.addListener(this);
+
+    fadeUpTimeLabel.setText("Fade up time", juce::dontSendNotification);
+    fadeUpTimeLabel.setFont(juce::Font(13, juce::Font::plain));
+    fadeUpTimeLabel.setJustificationType(juce::Justification::centredRight);
+    addAndMakeVisible(fadeUpTimeLabel);
+    
 
     // Add the sliders to the window
     addAndMakeVisible(volumeRange);
@@ -84,8 +122,8 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
     addAndMakeVisible(fadeButton);
 
     // Add the fade time textboxes to the window
-    addAndMakeVisible(fadeDownTimeLabel);
-    addAndMakeVisible(fadeUpTimeLabel);
+    addAndMakeVisible(fadeDownTimeInput);
+    addAndMakeVisible(fadeUpTimeInput);
 }
 
 FaderVSTAudioProcessorEditor::~FaderVSTAudioProcessorEditor(){
@@ -98,18 +136,27 @@ void FaderVSTAudioProcessorEditor::paint (juce::Graphics& g){
 }
 
 void FaderVSTAudioProcessorEditor::resized(){
+    // TODO: Make this design responsive
+    
+    volumeRangeLowLabel.setBounds(42, 25, 55, 18);
+    volumeRangeLowInput.setBounds(111, 23, 33, 22);
+    volumeRangeHighLabel.setBounds(251, 25, 55, 18);
+    volumeRangeHighInput.setBounds(325, 23, 33, 22);
+
     // Set the position of the range slider
-    volumeRange.setBounds(40, 0, getWidth() - 80, 60);
+    volumeRange.setBounds(42, 72, 316, 24);
 
     // Set the position of the current volume slider
-    currentVolume.setBounds(40, 60, getWidth() - 80, 90);
+    currentVolume.setBounds(42, 150, 316, 24);
 
     // Set the positions of the fade time textboxes
-    fadeDownTimeLabel.setBounds(40, 120, (getWidth() - 80) / 2, 20);
-    fadeUpTimeLabel.setBounds(fadeDownTimeLabel.getX() + fadeDownTimeLabel.getWidth(), 120, fadeDownTimeLabel.getWidth(), 20);
+    fadeDownTimeLabel.setBounds(43, 186, 100, 18);
+    fadeDownTimeInput.setBounds(157, 184, 31, 22);
+    fadeUpTimeLabel.setBounds(214, 186, 100, 18);
+    fadeUpTimeInput.setBounds(328, 184, 31, 22);
 
     // Set the position of the fade button
-    fadeButton.setBounds(40, 160, getWidth() - 80, 40);
+    fadeButton.setBounds(42, 234, 316, 36);
 }
 
 void FaderVSTAudioProcessorEditor::fade(){
@@ -125,9 +172,9 @@ void FaderVSTAudioProcessorEditor::fade(){
 void FaderVSTAudioProcessorEditor::labelTextChanged(juce::Label *label){
     juce::String text = label->getText();
     double value = text.getDoubleValue();
-    if (label == &fadeDownTimeLabel){
+    if (label == &fadeDownTimeInput){
       fadeDownTime = value;
-    } else if (label == &fadeUpTimeLabel) {
+    } else if (label == &fadeUpTimeInput) {
       fadeUpTime = value;
     }
 }
