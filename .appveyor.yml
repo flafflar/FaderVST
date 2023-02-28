@@ -28,7 +28,7 @@ before_build:
 
 build_script:
 - ps: |
-    if (Test-Path build -PathType Container){
+    if (!(Test-Path build -PathType Container)){
         cmake -B build -DCMAKE_BUILD_TYPE="$env:BUILD_TYPE"
     }
     cmake --build build --config $env:BUILD_TYPE
