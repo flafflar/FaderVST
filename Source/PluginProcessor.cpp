@@ -202,13 +202,12 @@ void FaderVSTAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
     }
 
     // Apply the gain ramp
-    buffer.applyGainRamp(0, buffer.getNumSamples(), *gain, finalGain);
+    buffer.applyGainRamp(0, samplesToProcess, *gain, finalGain);
 
     // If any samples remain after the ramp, apply a constant gain
-    // TODO: Make this work properly
-    /*if (samplesToProcess < buffer.getNumSamples()){
-        buffer.applyGain(samplesToProcess, buffer.getNumSamples(), finalGain);
-    }*/
+    if (samplesToProcess < buffer.getNumSamples()){
+        buffer.applyGain(samplesToProcess, buffer.getNumSamples() - samplesToProcess, finalGain);
+    }
 
     // Notify the editor that the parameter has changed so it can update the GUI
     parameters.getParameter("gain")->setValueNotifyingHost(finalGain);
