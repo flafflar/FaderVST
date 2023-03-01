@@ -30,6 +30,7 @@
 
 #include <juce_audio_processors/juce_audio_processors.h>
 #include "TwoValueSliderAttachment.h"
+#include "LabelAttachment.h"
 #include "PluginProcessor.h"
 #include <array>
 
@@ -68,6 +69,8 @@ private:
      */
     juce::Label volumeRangeLowInput;
 
+    LabelAttachment volumeRangeLowInputAttachment;
+
     /**
      * The label for the volumeRangeLowInput.
      */
@@ -77,6 +80,8 @@ private:
      * The text input for the high point of the gain range.
      */
     juce::Label volumeRangeHighInput;
+
+    LabelAttachment volumeRangeHighInputAttachment;
 
     /**
      * The label for the volumeRangeHighInput.

@@ -32,7 +32,9 @@
 //==============================================================================
 FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcessor& p, juce::AudioProcessorValueTreeState &tree)
     : AudioProcessorEditor (&p), audioProcessor (p), tree(tree),
-    volumeRangeAttachment(volumeRange, *tree.getParameter("gainLow"), *tree.getParameter("gainHigh"))
+    volumeRangeAttachment(volumeRange, *tree.getParameter("gainLow"), *tree.getParameter("gainHigh")),
+    volumeRangeLowInputAttachment(volumeRangeLowInput, *tree.getParameter("gainLow")),
+    volumeRangeHighInputAttachment(volumeRangeHighInput, *tree.getParameter("gainHigh"))
     {
     
     faded = false;
