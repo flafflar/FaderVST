@@ -88,7 +88,22 @@ private:
      */
     juce::Label volumeRangeHighLabel;
 
+    /**
+     * A slider that displays the current value of the gain.
+     */
     juce::Slider currentVolume;
+
+    /**
+     * The text input for the current gain.
+     */
+    juce::Label currentVolumeInput;
+    LabelAttachment currentVolumeInputAttachment;
+
+    /**
+     * The label for currentVolumeInput.
+     */
+    juce::Label currentVolumeLabel;
+
     juce::TextButton fadeButton;
 
     /**

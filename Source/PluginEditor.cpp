@@ -34,7 +34,8 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
     : AudioProcessorEditor (&p), audioProcessor (p), tree(tree),
     volumeRangeAttachment(volumeRange, *tree.getParameter("gainLow"), *tree.getParameter("gainHigh")),
     volumeRangeLowInputAttachment(volumeRangeLowInput, *tree.getParameter("gainLow")),
-    volumeRangeHighInputAttachment(volumeRangeHighInput, *tree.getParameter("gainHigh"))
+    volumeRangeHighInputAttachment(volumeRangeHighInput, *tree.getParameter("gainHigh")),
+    currentVolumeInputAttachment(currentVolumeInput, *tree.getParameter("gain"))
     {
     
     faded = false;
@@ -81,6 +82,16 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
     currentVolume.setRange(0.0, 1.0, 0.01);
     currentVolume.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     currentVolume.setValue(1.0);
+
+    currentVolumeLabel.setText("Current gain", juce::dontSendNotification);
+    currentVolumeLabel.setFont(juce::Font(13, juce::Font::plain));
+    currentVolumeLabel.setJustificationType(juce::Justification::centredLeft);
+    addAndMakeVisible(currentVolumeLabel);
+
+    currentVolumeInput.setText("1.0", juce::dontSendNotification);
+    currentVolumeInput.setFont(juce::Font(16, juce::Font::bold));
+    currentVolumeInput.setJustificationType(juce::Justification::centredLeft);
+    addAndMakeVisible(currentVolumeInput);
 
     // Create the attachment to the gain parameter
     currentVolumeAttachment.reset(new juce::ParameterAttachment(*tree.getParameter("gain"), [this](float value){
@@ -149,6 +160,9 @@ void FaderVSTAudioProcessorEditor::resized(){
 
     // Set the position of the current volume slider
     currentVolume.setBounds(42, 150, 316, 24);
+
+    currentVolumeLabel.setBounds(42, 109, 77, 18);
+    currentVolumeInput.setBounds(134, 107, 33, 22);
 
     // Set the positions of the fade time textboxes
     fadeDownTimeLabel.setBounds(43, 186, 100, 18);
