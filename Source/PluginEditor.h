@@ -29,6 +29,7 @@
 #pragma once
 
 #include <juce_audio_processors/juce_audio_processors.h>
+#include "TwoValueSliderAttachment.h"
 #include "PluginProcessor.h"
 #include <array>
 
@@ -59,6 +60,8 @@ private:
      * A double slider that sets the range of the gain.
      */
     juce::Slider volumeRange;
+
+    TwoValueSliderAttachment volumeRangeAttachment;
     
     /**
      * The text input for the low point of the gain range.

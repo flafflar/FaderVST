@@ -31,7 +31,9 @@
 
 //==============================================================================
 FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcessor& p, juce::AudioProcessorValueTreeState &tree)
-    : AudioProcessorEditor (&p), audioProcessor (p), tree(tree) {
+    : AudioProcessorEditor (&p), audioProcessor (p), tree(tree),
+    volumeRangeAttachment(volumeRange, *tree.getParameter("gainLow"), *tree.getParameter("gainHigh"))
+    {
     
     faded = false;
     fadeDownTime = 1.0;
@@ -46,9 +48,6 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
     volumeRange.setRange(0.0, 1.0, 0.01);
     volumeRange.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     volumeRange.setMinAndMaxValues(0.0, 1.0);
-    volumeRange.onValueChange = [this](){
-      this->audioProcessor.setGainRange(this->volumeRange.getMinValue(), this->volumeRange.getMaxValue());
-    };
 
 
     // Configure the volume range low point input and its label
