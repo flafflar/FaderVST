@@ -18,6 +18,14 @@ juce_add_plugin(
 	FORMATS "${FORMATS}"
 	PRODUCT_NAME "FaderVST"
 )
+	
+juce_add_binary_data(
+	BinaryData
+	SOURCES
+	assets/fonts/Noto/NotoSans-Regular.ttf
+	assets/fonts/Noto/NotoSans-Bold.ttf
+)
+set_target_properties(BinaryData PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 
 target_sources(
 	FaderVST
@@ -38,6 +46,7 @@ target_compile_definitions(
 target_link_libraries(
 	FaderVST
 	PRIVATE
+	BinaryData
 	juce::juce_core
 	juce::juce_audio_processors
 	juce::juce_audio_plugin_client

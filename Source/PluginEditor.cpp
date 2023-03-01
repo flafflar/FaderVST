@@ -54,25 +54,25 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
 
 
     // Configure the volume range low point input and its label
-    volumeRangeLowInput.setText("0.0", juce::dontSendNotification);
-    volumeRangeLowInput.setFont(juce::Font(16, juce::Font::bold));
+    volumeRangeLowInput.setText("0.00", juce::dontSendNotification);
+    volumeRangeLowInput.setFont(inputFont);
     volumeRangeLowInput.setEditable(true);
     addAndMakeVisible(volumeRangeLowInput);
 
     volumeRangeLowLabel.setText("Low gain", juce::dontSendNotification);
-    volumeRangeLowLabel.setFont(juce::Font(13, juce::Font::plain));
+    volumeRangeLowLabel.setFont(labelFont);
     volumeRangeLowLabel.setJustificationType(juce::Justification::centredLeft);
     addAndMakeVisible(volumeRangeLowLabel);
 
 
     // Configure the volume range high point input and its label
-    volumeRangeHighInput.setText("0.0", juce::dontSendNotification);
-    volumeRangeHighInput.setFont(juce::Font(16, juce::Font::bold));
+    volumeRangeHighInput.setText("1.00", juce::dontSendNotification);
+    volumeRangeHighInput.setFont(inputFont);
     volumeRangeHighInput.setEditable(true);
     addAndMakeVisible(volumeRangeHighInput);
 
     volumeRangeHighLabel.setText("High gain", juce::dontSendNotification);
-    volumeRangeHighLabel.setFont(juce::Font(13, juce::Font::plain));
+    volumeRangeHighLabel.setFont(labelFont);
     volumeRangeHighLabel.setJustificationType(juce::Justification::centredLeft);
     addAndMakeVisible(volumeRangeHighLabel);
 
@@ -84,12 +84,12 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
     currentVolume.setValue(1.0);
 
     currentVolumeLabel.setText("Current gain", juce::dontSendNotification);
-    currentVolumeLabel.setFont(juce::Font(13, juce::Font::plain));
+    currentVolumeLabel.setFont(labelFont);
     currentVolumeLabel.setJustificationType(juce::Justification::centredLeft);
     addAndMakeVisible(currentVolumeLabel);
 
     currentVolumeInput.setText("1.0", juce::dontSendNotification);
-    currentVolumeInput.setFont(juce::Font(16, juce::Font::bold));
+    currentVolumeInput.setFont(inputFont);
     currentVolumeInput.setJustificationType(juce::Justification::centredLeft);
     addAndMakeVisible(currentVolumeInput);
 
@@ -104,24 +104,24 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
 
     // Configure the fade times textboxes
     fadeDownTimeInput.setEditable(true);
-    fadeDownTimeInput.setJustificationType(juce::Justification::centred);
+    fadeDownTimeInput.setJustificationType(juce::Justification::centredRight);
     fadeDownTimeInput.setText("1.0", juce::dontSendNotification);
-    fadeDownTimeInput.setFont(juce::Font(16, juce::Font::bold));
+    fadeDownTimeInput.setFont(inputFont);
     fadeDownTimeInput.addListener(this);
 
     fadeDownTimeLabel.setText("Fade down time", juce::dontSendNotification);
-    fadeDownTimeLabel.setFont(juce::Font(13, juce::Font::plain));
+    fadeDownTimeLabel.setFont(labelFont);
     fadeDownTimeLabel.setJustificationType(juce::Justification::centredLeft);
     addAndMakeVisible(fadeDownTimeLabel);
 
     fadeUpTimeInput.setEditable(true);
-    fadeUpTimeInput.setJustificationType(juce::Justification::centred);
+    fadeUpTimeInput.setJustificationType(juce::Justification::centredRight);
     fadeUpTimeInput.setText("1.0", juce::dontSendNotification);
-    fadeUpTimeInput.setFont(juce::Font(16, juce::Font::bold));
+    fadeUpTimeInput.setFont(inputFont);
     fadeUpTimeInput.addListener(this);
 
     fadeUpTimeLabel.setText("Fade up time", juce::dontSendNotification);
-    fadeUpTimeLabel.setFont(juce::Font(13, juce::Font::plain));
+    fadeUpTimeLabel.setFont(labelFont);
     fadeUpTimeLabel.setJustificationType(juce::Justification::centredRight);
     addAndMakeVisible(fadeUpTimeLabel);
     
@@ -150,10 +150,10 @@ void FaderVSTAudioProcessorEditor::paint (juce::Graphics& g){
 void FaderVSTAudioProcessorEditor::resized(){
     // TODO: Make this design responsive
     
-    volumeRangeLowLabel.setBounds(42, 25, 55, 18);
-    volumeRangeLowInput.setBounds(111, 23, 33, 22);
-    volumeRangeHighLabel.setBounds(251, 25, 55, 18);
-    volumeRangeHighInput.setBounds(325, 23, 33, 22);
+    volumeRangeLowLabel.setBounds(42, 25, 69, 18);
+    volumeRangeLowInput.setBounds(111, 23, 40, 22);
+    volumeRangeHighLabel.setBounds(244, 25, 74, 18);
+    volumeRangeHighInput.setBounds(318, 23, 40, 22);
 
     // Set the position of the range slider
     volumeRange.setBounds(42, 72, 316, 24);
@@ -161,14 +161,14 @@ void FaderVSTAudioProcessorEditor::resized(){
     // Set the position of the current volume slider
     currentVolume.setBounds(42, 150, 316, 24);
 
-    currentVolumeLabel.setBounds(42, 109, 77, 18);
-    currentVolumeInput.setBounds(134, 107, 33, 22);
+    currentVolumeLabel.setBounds(42, 109, 91, 18);
+    currentVolumeInput.setBounds(134, 107, 40, 22);
 
     // Set the positions of the fade time textboxes
     fadeDownTimeLabel.setBounds(43, 186, 100, 18);
-    fadeDownTimeInput.setBounds(157, 184, 31, 22);
+    fadeDownTimeInput.setBounds(143, 184, 45, 22);
     fadeUpTimeLabel.setBounds(214, 186, 100, 18);
-    fadeUpTimeInput.setBounds(328, 184, 31, 22);
+    fadeUpTimeInput.setBounds(314, 184, 45, 22);
 
     // Set the position of the fade button
     fadeButton.setBounds(42, 234, 316, 36);

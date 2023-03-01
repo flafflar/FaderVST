@@ -29,6 +29,7 @@
 #pragma once
 
 #include <juce_audio_processors/juce_audio_processors.h>
+#include "fonts.h"
 #include "TwoValueSliderAttachment.h"
 #include "LabelAttachment.h"
 #include "PluginProcessor.h"
@@ -56,6 +57,16 @@ private:
     // access the processor object that created it.
     FaderVSTAudioProcessor& audioProcessor;
     juce::AudioProcessorValueTreeState &tree;
+
+    /**
+     * The font used in input boxes.
+     */
+    juce::Font inputFont = fonts::NotoSansBold().withPointHeight(16);
+
+    /**
+     * The font used in labels of inputs.
+     */
+    juce::Font labelFont = fonts::NotoSans().withPointHeight(14);
 
     /**
      * A double slider that sets the range of the gain.
