@@ -115,6 +115,17 @@ private:
      */
     juce::Label currentVolumeLabel;
 
+    /**
+     * A checkbox that can allow freely changing the gain through its slider.
+     */
+    juce::ToggleButton unlockCurrentVolume;
+
+    /**
+     * The label for the unlockCurrentVolume checkbox.
+     */
+    juce::Label unlockCurrentVolumeLabel;
+
+
     juce::TextButton fadeButton;
 
     /**

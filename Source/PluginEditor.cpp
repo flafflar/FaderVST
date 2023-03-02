@@ -82,6 +82,11 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
     currentVolume.setRange(0.0, 1.0, 0.01);
     currentVolume.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     currentVolume.setValue(1.0);
+    currentVolume.onValueChange = [this](){
+        if (this->unlockCurrentVolume.getToggleState()){
+            this->tree.getParameter("gain")->setValueNotifyingHost(this->currentVolume.getValue());
+        }
+    };
 
     currentVolumeLabel.setText("Current gain", juce::dontSendNotification);
     currentVolumeLabel.setFont(labelFont);
@@ -92,6 +97,14 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
     currentVolumeInput.setFont(inputFont);
     currentVolumeInput.setJustificationType(juce::Justification::centredLeft);
     addAndMakeVisible(currentVolumeInput);
+
+    // Configure the current volume slider unlock checkbox
+    addAndMakeVisible(unlockCurrentVolume);
+
+    unlockCurrentVolumeLabel.setText("Unlock gain slider", juce::dontSendNotification);
+    unlockCurrentVolumeLabel.setFont(labelFont);
+    unlockCurrentVolumeLabel.setJustificationType(juce::Justification::centredLeft);
+    addAndMakeVisible(unlockCurrentVolumeLabel);
 
     // Create the attachment to the gain parameter
     currentVolumeAttachment.reset(new juce::ParameterAttachment(*tree.getParameter("gain"), [this](float value){
@@ -163,6 +176,9 @@ void FaderVSTAudioProcessorEditor::resized(){
 
     currentVolumeLabel.setBounds(42, 109, 91, 18);
     currentVolumeInput.setBounds(134, 107, 40, 22);
+
+    unlockCurrentVolume.setBounds(232, 110, 136, 18);
+    unlockCurrentVolumeLabel.setBounds(258, 108, 110, 18);
 
     // Set the positions of the fade time textboxes
     fadeDownTimeLabel.setBounds(43, 186, 100, 18);
