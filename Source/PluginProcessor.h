@@ -97,6 +97,10 @@ public:
       *gainHigh = high;
     }
 
+    void stopFading(){
+      fadeDuration = 0;
+    }
+
 private:
     /**
      * The parameter tree of the plugin.

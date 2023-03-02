@@ -84,7 +84,10 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
     currentVolume.setValue(1.0);
     currentVolume.onValueChange = [this](){
         if (this->unlockCurrentVolume.getToggleState()){
-            this->tree.getParameter("gain")->setValueNotifyingHost(this->currentVolume.getValue());
+            if (currentVolume.getThumbBeingDragged() == 0){
+                this->audioProcessor.stopFading();
+                this->tree.getParameter("gain")->setValueNotifyingHost(this->currentVolume.getValue());
+            }
         }
     };
 
