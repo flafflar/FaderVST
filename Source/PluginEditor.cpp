@@ -1,30 +1,22 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
  * Copyright 2023 Achilleas Michailidis <achmichail@gmail.com>
- * 
+ *
  * This file is part of FaderVST.
- * 
+ *
  * FaderVST is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT 
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more 
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <https://www.gnu.org/licenses/>. 
+ * this program. If not, see <https://www.gnu.org/licenses/>.
  */
-
-/*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
@@ -37,7 +29,7 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
     volumeRangeHighInputAttachment(volumeRangeHighInput, *tree.getParameter("gainHigh")),
     currentVolumeInputAttachment(currentVolumeInput, *tree.getParameter("gain"))
     {
-    
+
     faded = false;
     fadeDownTime = 1.0;
     fadeUpTime = 1.0;
@@ -140,7 +132,7 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
     fadeUpTimeLabel.setFont(labelFont);
     fadeUpTimeLabel.setJustificationType(juce::Justification::centredRight);
     addAndMakeVisible(fadeUpTimeLabel);
-    
+
 
     // Add the sliders to the window
     addAndMakeVisible(volumeRange);
@@ -154,7 +146,7 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
     addAndMakeVisible(fadeUpTimeInput);
 }
 
-FaderVSTAudioProcessorEditor::~FaderVSTAudioProcessorEditor(){
+FaderVSTAudioProcessorEditor::~FaderVSTAudioProcessorEditor() {
 }
 
 //==============================================================================
@@ -165,7 +157,7 @@ void FaderVSTAudioProcessorEditor::paint (juce::Graphics& g){
 
 void FaderVSTAudioProcessorEditor::resized(){
     // TODO: Make this design responsive
-    
+
     volumeRangeLowLabel.setBounds(42, 25, 69, 18);
     volumeRangeLowInput.setBounds(111, 23, 40, 22);
     volumeRangeHighLabel.setBounds(244, 25, 74, 18);
@@ -208,7 +200,7 @@ void FaderVSTAudioProcessorEditor::labelTextChanged(juce::Label *label){
     double value = text.getDoubleValue();
     if (label == &fadeDownTimeInput){
       fadeDownTime = value;
-    } else if (label == &fadeUpTimeInput) {
+    } else if (label == &fadeUpTimeInput){
       fadeUpTime = value;
     }
 }

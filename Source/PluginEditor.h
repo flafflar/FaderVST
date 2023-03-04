@@ -1,33 +1,24 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
  * Copyright 2023 Achilleas Michailidis <achmichail@gmail.com>
- * 
+ *
  * This file is part of FaderVST.
- * 
+ *
  * FaderVST is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT 
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more 
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <https://www.gnu.org/licenses/>. 
+ * this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
-
 #pragma once
-
 #include <juce_audio_processors/juce_audio_processors.h>
 #include "fonts.h"
 #include "TwoValueSliderAttachment.h"
@@ -35,15 +26,11 @@
 #include "PluginProcessor.h"
 #include <array>
 
-//==============================================================================
-/**
-*/
-class FaderVSTAudioProcessorEditor  : public juce::AudioProcessorEditor, public juce::Label::Listener {
+class FaderVSTAudioProcessorEditor : public juce::AudioProcessorEditor, public juce::Label::Listener {
 public:
     FaderVSTAudioProcessorEditor (FaderVSTAudioProcessor&, juce::AudioProcessorValueTreeState&);
     ~FaderVSTAudioProcessorEditor() override;
 
-    //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
 
@@ -74,7 +61,7 @@ private:
     juce::Slider volumeRange;
 
     TwoValueSliderAttachment volumeRangeAttachment;
-    
+
     /**
      * The text input for the low point of the gain range.
      */
@@ -154,8 +141,8 @@ private:
     double fadeUpTime;
 
     /**
-     * Whether the audio is faded (or in the process of fading). 
-     * 
+     * Whether the audio is faded (or in the process of fading).
+     *
      * True when the audio is fading downwards, false when it is fading upwards.
      */
     bool faded;
