@@ -36,7 +36,7 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
 
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    setSize (420, 370);
 
     // Configure the volume range slider
     volumeRange.setSliderStyle(juce::Slider::TwoValueHorizontal);
@@ -133,6 +133,21 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
     fadeUpTimeLabel.setJustificationType(juce::Justification::centredRight);
     addAndMakeVisible(fadeUpTimeLabel);
 
+    // Configure the keyboard shortcut buttons
+    addAndMakeVisible(enableKeyboardShortcut);
+
+    enableKeyboardShortcutLabel.setText("Enable keyboard shortcut", juce::dontSendNotification);
+    enableKeyboardShortcutLabel.setFont(labelFont);
+    enableKeyboardShortcutLabel.setJustificationType(juce::Justification::centredLeft);
+    addAndMakeVisible(enableKeyboardShortcutLabel);
+
+    keyboardShortcutButton.setButtonText("Set shortcut");
+    keyboardShortcutButton.onClick = [this](){
+        keyboardShortcutState = KeyboardShortcutState::Registering;
+        keyboardShortcutButton.setButtonText("Press a key...");
+    };
+    addAndMakeVisible(keyboardShortcutButton);
+
 
     // Add the sliders to the window
     addAndMakeVisible(volumeRange);
@@ -181,8 +196,13 @@ void FaderVSTAudioProcessorEditor::resized(){
     fadeUpTimeLabel.setBounds(214, 186, 100, 18);
     fadeUpTimeInput.setBounds(314, 184, 45, 22);
 
+    enableKeyboardShortcut.setBounds(32, 230, 200, 18);
+    enableKeyboardShortcutLabel.setBounds(62, 230, 170, 18);
+
+    keyboardShortcutButton.setBounds(232, 230, 152, 18);
+
     // Set the position of the fade button
-    fadeButton.setBounds(42, 234, 316, 36);
+    fadeButton.setBounds(32, 300, 356, 36);
 }
 
 void FaderVSTAudioProcessorEditor::fade(){
@@ -206,8 +226,21 @@ void FaderVSTAudioProcessorEditor::labelTextChanged(juce::Label *label){
 }
 
 bool FaderVSTAudioProcessorEditor::keyPressed(const juce::KeyPress &key){
-    if (key.getTextCharacter() == ' '){
-        fade();
+    switch (keyboardShortcutState) {
+        case KeyboardShortcutState::Registering:
+            keyboardShortcut = new juce::KeyPress(key);
+            keyboardShortcutButton.setButtonText(keyboardShortcut->getTextDescription());
+            keyboardShortcutState = KeyboardShortcutState::Listening;
+            break;
+
+        case KeyboardShortcutState::Listening:
+            if (enableKeyboardShortcut.getToggleState() && keyboardShortcut){
+                if (key == *keyboardShortcut){
+                    fade();
+                }
+            }
+            break;
     }
+
     return false;
 }

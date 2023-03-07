@@ -135,6 +135,37 @@ private:
      */
     juce::Label fadeUpTimeLabel;
 
+
+    /**
+     * A button that enables listening to a key press that will trigger fading.
+     */
+    juce::ToggleButton enableKeyboardShortcut;
+
+    /**
+     * The label for the enableKeyboardShortcut button.
+     */
+    juce::Label enableKeyboardShortcutLabel;
+
+    /**
+     * A button that sets/displays the current keyboard shortcut for the fading.
+     */
+    juce::TextButton keyboardShortcutButton;
+
+    enum KeyboardShortcutState {
+        /**
+         * Listening for a keyboard shortcut to be registered as the main
+         * shortcut.
+         */
+        Registering,
+        /**
+         * A key is registered and is being listened to.
+        */
+        Listening,
+    };
+    KeyboardShortcutState keyboardShortcutState = KeyboardShortcutState::Listening;
+    juce::KeyPress *keyboardShortcut = nullptr;
+
+
     std::unique_ptr<juce::ParameterAttachment> currentVolumeAttachment;
 
     double fadeDownTime;
