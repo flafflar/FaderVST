@@ -35,7 +35,7 @@ FaderVSTAudioProcessor::FaderVSTAudioProcessor()
     std::make_unique<juce::AudioParameterFloat>("gainLow", "Low Gain", 0.0, 1.0, 0.0),
     std::make_unique<juce::AudioParameterFloat>("gainHigh", "High Gain", 0.0, 1.0, 1.0),
     std::make_unique<juce::AudioParameterFloat>("gain", "Gain", 0.0, 1.0, 1.0),
-    std::make_unique<juce::AudioParameterBool>("fading", "Is Fading", false),
+    std::make_unique<juce::AudioParameterBool>("fading", "Is Fading", true),
 }) {
     gainLow = parameters.getRawParameterValue("gainLow");
     gainHigh = parameters.getRawParameterValue("gainHigh");
@@ -148,8 +148,20 @@ void FaderVSTAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce
         buffer.clear (i, 0, buffer.getNumSamples());
 
     if (fadeDuration == 0){
-        // Just apply constant gain and end the processing
+        // When the fade duration is 0, make instant changes
+        if (*fading < 0.5){
+            // Set the gain to the low point instantly
+            *gain = gainLow->load();
+        } else {
+            // Set the gain to the high point instantly
+            *gain = gainHigh->load();
+        }
+
         buffer.applyGain(*gain);
+
+        // Notify the host of the new gain value
+        parameters.getParameter("gain")->setValueNotifyingHost(*gain);
+
         return;
     };
 
@@ -162,6 +174,12 @@ void FaderVSTAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce
         // Going up
         remaining = (*gainHigh - *gain) / (*gainHigh - *gainLow) * fadeDuration;
     }
+
+    // If the remaining samples are negative, that means that the end point
+    // was moved past the current gain value while the audio was fading.
+    // In that case, set the remaining samples to 0 to not crash the
+    // processing.
+    if (remaining < 0) remaining = 0;
 
     /** How many samples to process in the current block */
     int samplesToProcess = juce::jmin(remaining, buffer.getNumSamples());
@@ -183,6 +201,9 @@ void FaderVSTAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce
     // If any samples remain after the ramp, apply a constant gain
     if (samplesToProcess < buffer.getNumSamples()){
         buffer.applyGain(samplesToProcess, buffer.getNumSamples() - samplesToProcess, finalGain);
+        // Since the fading has ended, set the duration to 0 so that next
+        // blocks are processed with a constant gain directly
+        fadeDuration = 0;
     }
 
     // Notify the editor that the parameter has changed so it can update the GUI
