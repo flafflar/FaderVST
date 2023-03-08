@@ -173,33 +173,33 @@ void FaderVSTAudioProcessorEditor::paint (juce::Graphics& g){
 void FaderVSTAudioProcessorEditor::resized(){
     // TODO: Make this design responsive
 
-    volumeRangeLowLabel.setBounds(42, 25, 69, 18);
-    volumeRangeLowInput.setBounds(111, 23, 40, 22);
-    volumeRangeHighLabel.setBounds(244, 25, 74, 18);
-    volumeRangeHighInput.setBounds(318, 23, 40, 22);
+    volumeRangeLowLabel.setBounds(32, 27, 69, 18);
+    volumeRangeLowInput.setBounds(101, 25, 40, 22);
+    volumeRangeHighLabel.setBounds(260, 27, 74, 18);
+    volumeRangeHighInput.setBounds(348, 25, 40, 22);
 
     // Set the position of the range slider
-    volumeRange.setBounds(42, 72, 316, 24);
+    volumeRange.setBounds(24, 64, 372, 24);
 
     // Set the position of the current volume slider
-    currentVolume.setBounds(42, 150, 316, 24);
+    currentVolume.setBounds(24, 142, 372, 24);
 
-    currentVolumeLabel.setBounds(42, 109, 91, 18);
-    currentVolumeInput.setBounds(134, 107, 40, 22);
+    currentVolumeLabel.setBounds(32, 106, 91, 18);
+    currentVolumeInput.setBounds(123, 103, 40, 22);
 
-    unlockCurrentVolume.setBounds(232, 110, 136, 18);
-    unlockCurrentVolumeLabel.setBounds(258, 108, 110, 18);
+    unlockCurrentVolume.setBounds(252, 108, 136, 18);
+    unlockCurrentVolumeLabel.setBounds(278, 107, 110, 18);
 
     // Set the positions of the fade time textboxes
-    fadeDownTimeLabel.setBounds(43, 186, 100, 18);
-    fadeDownTimeInput.setBounds(143, 184, 45, 22);
-    fadeUpTimeLabel.setBounds(214, 186, 100, 18);
-    fadeUpTimeInput.setBounds(314, 184, 45, 22);
+    fadeDownTimeLabel.setBounds(32, 184, 100, 18);
+    fadeDownTimeInput.setBounds(144, 183, 45, 22);
+    fadeUpTimeLabel.setBounds(223, 184, 100, 18);
+    fadeUpTimeInput.setBounds(343, 183, 45, 22);
 
     enableKeyboardShortcut.setBounds(32, 230, 200, 18);
     enableKeyboardShortcutLabel.setBounds(62, 230, 170, 18);
 
-    keyboardShortcutButton.setBounds(232, 230, 152, 18);
+    keyboardShortcutButton.setBounds(242, 230, 142, 18);
 
     // Set the position of the fade button
     fadeButton.setBounds(32, 300, 356, 36);
