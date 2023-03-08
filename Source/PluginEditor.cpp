@@ -94,12 +94,12 @@ FaderVSTAudioProcessorEditor::FaderVSTAudioProcessorEditor (FaderVSTAudioProcess
     addAndMakeVisible(currentVolumeInput);
 
     // Configure the current volume slider unlock checkbox
-    addAndMakeVisible(unlockCurrentVolume);
+    // addAndMakeVisible(unlockCurrentVolume);
 
     unlockCurrentVolumeLabel.setText("Unlock gain slider", juce::dontSendNotification);
     unlockCurrentVolumeLabel.setFont(labelFont);
     unlockCurrentVolumeLabel.setJustificationType(juce::Justification::centredLeft);
-    addAndMakeVisible(unlockCurrentVolumeLabel);
+    // addAndMakeVisible(unlockCurrentVolumeLabel);
 
     // Create the attachment to the gain parameter
     currentVolumeAttachment.reset(new juce::ParameterAttachment(*tree.getParameter("gain"), [this](float value){
