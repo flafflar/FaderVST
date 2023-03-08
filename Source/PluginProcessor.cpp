@@ -187,6 +187,8 @@ void FaderVSTAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce
 
     // Notify the editor that the parameter has changed so it can update the GUI
     parameters.getParameter("gain")->setValueNotifyingHost(finalGain);
+    // Also update the gain directly because the above method does not update the value if the difference is too small
+    *gain = finalGain;
 }
 
 bool FaderVSTAudioProcessor::hasEditor() const {
